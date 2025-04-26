@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 use App\Http\Controllers\ClienteController;
-use Illuminate\Support\Facades\Route;
+Route::resource('clientes', clientesController::class);
+Route::resource('funcionarios', funcionariosController::class);
+Route::resource('gatos', gatosController::class);
+
 
 
 Route::get('/', function () {
