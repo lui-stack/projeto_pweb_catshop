@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("funcao",100);
             $table->timestamps();
         });
+
+        
     }
 
     /**

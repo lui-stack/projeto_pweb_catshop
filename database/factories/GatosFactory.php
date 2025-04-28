@@ -2,27 +2,20 @@
 
 namespace Database\Factories;
 
+use App\Models\Cliente;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Gatos>
- */
 class GatosFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+
     public function definition(): array
     {
+        $racas = ['Siamês', 'Persa', 'Maine Coon', 'Bengal', 'Sphynx'];
+
         return [
-            'nome'=>$this->faker->name,
-            'raca'=>$this->faker->randomElement(['siames', 'persa', 'maine coon', 'rebaixado', 'radgoll']),
-            'id_do_atendimento'=>$this->faker->numerify(100),
-
-
-
+            'nome' => $this->faker->firstName(),
+            'raca' => $this->faker->randomElement($racas),
+            'cliente_id' => Cliente::factory(),
         ];
     }
 }
