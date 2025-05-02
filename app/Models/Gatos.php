@@ -14,8 +14,8 @@ class Gatos extends Model
     protected $fillable =[
         "nome",
         "raca",
-        "idade"
-
+        "idade",
+        "cliente_id",
 
     ];
 }

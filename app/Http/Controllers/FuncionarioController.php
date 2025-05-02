@@ -14,11 +14,11 @@ class FuncionarioController extends Controller
 
         {
             //select * from alunos
-            $dados = Funcionario::All();
+            $funcionarios = Funcionario::All();
 
             return view(
-                'Funcionario.list',
-                ['dados' => $dados]
+                'funcionario.list',
+                ['funcionarios' => $funcionarios]
             );
 
     }
@@ -28,11 +28,7 @@ class FuncionarioController extends Controller
      */
     public function create()
     {
-        $categorias = CategoriaFuncionario::orderBy('nome')->get();
-
-        return view('Funcionario.form', [
-            'categorias' => $categorias,
-        ]);
+        return view('funcionario.form');
 
 
     }
@@ -42,9 +38,17 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validateRequest($request);
+        $request->validate([
+            'nome' => 'required',
+            'cpf' => 'required|unique:funcionarios,cpf',
+            'funcao' => 'required',
+        ]);
+        $data = [
+            'nome' => $request->nome,
+            'cpf' => $request->cpf,
+            'funcao' => $request->funcao,
+        ];
 
-        $data = $request->all();
 
         Funcionario::create($data);
 
@@ -53,19 +57,16 @@ class FuncionarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Funcionario $funcionario)
+    public function edit(string $id)
 
         {
-            $dado = Funcionario::findOrFail($id);
-
-            $categorias = Funcionario::orderBy('nome')->get();
-
+            $funcionario = Funcionario::findOrFail($id);
             return view(
                 'cliente.form',
                 [
-                    'dado' => $dado,
-                    'categorias' => $categorias
+                    'funcionario' => $funcionario
                 ]
+
             );
 
     }
@@ -73,11 +74,19 @@ class FuncionarioController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Funcionario $funcionario)
+    public function update(Request $request, string $id)
     {
-        $this->validateRequest($request);
+        $request->validate([
+            'nome' => 'required',
+            'cpf' => 'required|unique:funcionarios,cpf',
+            'funcao' => 'required',
+        ]);
+        $data = [
+            'nome' => $request->nome,
+            'cpf' => $request->cpf,
+            'funcao' => $request->funcao,
+        ];
 
-        $data = $request->all();
 
         Funcionario::updateOrCreate(
             ['id' => $id],
@@ -91,13 +100,28 @@ class FuncionarioController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Funcionario $funcionario)
+    public function destroy(string $id)
     {
-        //  dd("teste");
         $dado = Funcionario::find($id);
 
         $dado->delete();
 
-        return redirect('Funcionario');
+        return redirect('funcionario');
+    }
+    public function search(Request $request){
+        if (!empty($request->value)) {
+            $valor = $request->valor;
+            $tipo = $request->tipo;
+
+            $funcionarios = Funcionario::where($tipo, 'like', "%$valor%")->get();
+            if (empty($funcionarios)) {
+                return view("funcionario.list", ['funcionarios' => $funcionarios]);
+            }
+        }else{
+            $funcionarios = Funcionario::All();
+        }
+
+        return view("funcionario.list", ['funcionarios' => $funcionarios]);
+
     }
 }

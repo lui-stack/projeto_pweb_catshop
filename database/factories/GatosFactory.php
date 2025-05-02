@@ -4,9 +4,11 @@ namespace Database\Factories;
 
 use App\Models\Cliente;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Gatos;
 
 class GatosFactory extends Factory
 {
+    protected $model = Gatos::class;
 
     public function definition(): array
     {
