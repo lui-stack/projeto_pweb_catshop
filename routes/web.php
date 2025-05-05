@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\FuncionarioController;
 use App\Http\Controllers\GatoController;
-
+Route::get('/',function(){
+    return view('welcome');
+});
 
 Route::prefix('cliente')->group(function () {
     Route::get('/', [ClienteController::class, 'index'])->name('cliente.index');
